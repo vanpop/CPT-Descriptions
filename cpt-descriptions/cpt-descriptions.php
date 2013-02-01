@@ -2,7 +2,7 @@
 /*
 Plugin Name: CPT Descriptions
 Version: 0.1
-Plugin URI:
+Plugin URI: http://vanpop.com/cpt-descriptions/
 Description: Adds a place to enter a description for your custom post types which you can display anywhere in your template.
 Author: Evan Stein
 Author URI: http://vanpop.com/
