@@ -14,7 +14,7 @@ This plugin adds a place to enter a description for your custom post types which
 
 == Installation ==
 
-1. Upload the ''cpt-descriptions` folder to the `/wp-content/plugins/` directory
+1. Upload the 'cpt-descriptions' folder to the '/wp-content/plugins/' directory
 1. Activate the CPT Descriptions plugin through the 'Plugins' menu in WordPress
 1. Use the_cpt_description() or get_cpt_description() to display/use the custom post type description in your theme
 
