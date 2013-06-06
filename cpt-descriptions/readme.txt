@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: cpt, custom post types, description, custom post type description, vanpop
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 0.1
+Stable tag: 0.2
 
 == Description ==
 
@@ -16,7 +16,7 @@ This plugin adds a place to enter a description for your custom post types which
 
 1. Upload the 'cpt-descriptions' folder to the '/wp-content/plugins/' directory
 1. Activate the CPT Descriptions plugin through the 'Plugins' menu in WordPress
-1. Use the_cpt_description() or get_cpt_description() to display/use the custom post type description in your theme
+1. Use the_post_type_description() or get_post_type_description() to display/use the custom post type description in your theme
 
 == Frequently Asked Questions ==
 
@@ -31,6 +31,12 @@ If you are not on an archive/single custom post type template you can pass the p
 1. Show added admin menu item and custom post type description entry page/field
 
 == Changelog ==
+
+= 0.2 =
+
+* Corrected readme.txt installation
+* Bugfix: kses filtering on cpt descriptions
+* Bugfix: Admin Menu dropdowns not working with multiple custom post types
 
 = 0.1 =
 
