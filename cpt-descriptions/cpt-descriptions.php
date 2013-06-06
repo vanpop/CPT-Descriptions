@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: CPT Descriptions
-Version: 0.1
+Version: 0.2
 Plugin URI: http://vanpop.com/cpt-descriptions/
 Description: Adds a place to enter a description for your custom post types which you can display anywhere in your template.
 Author: Evan Stein
@@ -60,7 +60,7 @@ function post_type_desc_enable_pages() {
     $operator = 'and'; // 'and' or 'or'
     $post_type_info = get_post_types( $args, $output, $operator );
 
-    add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', basename(__FILE__), 'post_type_desc_page' );
+    add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
   }
 }
 
@@ -106,7 +106,7 @@ function post_type_desc_page() {
 
 function post_type_desc_validate_options( $input ) {
   // strip all tags from the text field, to avoid vulnerablilties like XSS
-  $input['description'] = wp_filter_post_kses( $input['description'] );
+  $input['description'] = wp_kses_post( $input['description'] );
   return $input;
 }
 
