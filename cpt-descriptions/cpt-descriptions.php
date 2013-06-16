@@ -28,39 +28,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 add_action( 'admin_init', 'post_type_desc_register_settings' );
 add_action( 'admin_menu' , 'post_type_desc_enable_pages' );
 
-function post_type_desc_register_settings() {
+function cptd_get_post_types() {
   $args = array(
     'public'   => true,
     '_builtin' => false
   );
-  $output = 'names'; // names or objects, note names is the default
-  $operator = 'and'; // 'and' or 'or'
-  $post_types = get_post_types( $args, $output, $operator );
+  $post_types = apply_filters( 'cptd_post_types', get_post_types( $args ) );
+
+  return $post_types;
+}
+
+function post_type_desc_register_settings() {
+  $post_types = cptd_get_post_types();
 
   foreach ( $post_types as $post_type ) {
-    // Register settings and call sanitation functions
-    register_setting( 'post_type_desc' . $post_type, 'post_type_desc_' . $post_type, 'post_type_desc_validate_options' );
+    if( post_type_exists( $post_type ) ) {
+      // Register settings and call sanitation functions
+      register_setting( 'post_type_desc' . $post_type, 'post_type_desc_' . $post_type, 'post_type_desc_validate_options' );
+    }
   }
 }
 
 function post_type_desc_enable_pages() {
-  $args = array(
-    'public'   => true,
-    '_builtin' => false
-  );
-  $output = 'names'; // names or objects, note names is the default
-  $operator = 'and'; // 'and' or 'or'
-  $post_types = get_post_types( $args, $output, $operator );
+  $post_types = cptd_get_post_types();
 
   foreach ( $post_types as $post_type ) {
-    $args = array(
-      'name' => $post_type,
-    );
-    $output = 'objects'; // names or objects, note names is the default
-    $operator = 'and'; // 'and' or 'or'
-    $post_type_info = get_post_types( $args, $output, $operator );
+    if( post_type_exists( $post_type ) ) {
+      $args = array(
+        'name' => $post_type,
+      );
+      $post_type_info = get_post_types( $args, 'objects' );
 
-    add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+      add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+    }
   }
 }
 
@@ -71,9 +71,7 @@ function post_type_desc_page() {
   $args = array(
     'name' => $post_type,
   );
-  $output = 'objects'; // names or objects, note names is the default
-  $operator = 'and'; // 'and' or 'or'
-  $post_type_info = get_post_types( $args, $output, $operator );
+  $post_type_info = get_post_types( $args, 'objects' );
 
   if ( ! isset( $_REQUEST['settings-updated'] ) )
     $_REQUEST['settings-updated'] = false; // This checks whether the form has just been submitted. ?>
