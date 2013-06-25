@@ -143,12 +143,12 @@ function the_post_type_description( $post_type = '' ) {
   if ( '' == $post_type )
     global $post_type;
   $post_type_x = get_option( 'post_type_desc_' . $post_type );
-  echo wpautop( $post_type_x['description'] );
+  echo apply_filters( 'the_content', $post_type_x['description'] );
 }
 
 function get_post_type_description( $post_type = '' ) {
   if ( '' == $post_type )
     global $post_type;
   $post_type_x = get_option( 'post_type_desc_' . $post_type );
-  return wpautop( $post_type_x['description'] );
+  echo apply_filters( 'the_content', $post_type_x['description'] );
 }
