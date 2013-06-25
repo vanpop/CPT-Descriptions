@@ -140,10 +140,7 @@ function post_type_desc_validate_options( $input ) {
 }
 
 function the_post_type_description( $post_type = '' ) {
-  if ( '' == $post_type )
-    global $post_type;
-  $post_type_x = get_option( 'post_type_desc_' . $post_type );
-  echo apply_filters( 'the_content', $post_type_x['description'] );
+  echo get_post_type_description( $post_type );
 }
 
 function get_post_type_description( $post_type = '' ) {
