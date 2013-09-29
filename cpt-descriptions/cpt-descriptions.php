@@ -60,7 +60,20 @@ function post_type_desc_enable_pages() {
     $operator = 'and'; // 'and' or 'or'
     $post_type_info = get_post_types( $args, $output, $operator );
 
-    add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+    $settings_page_title = sprintf( __( 'Description of the %1$s Custom Post Type', 'cptdescriptions' ), $post_type_info[$post_type]->labels->name );
+    $settings_page_title = apply_filters( 'cptd_admin_title', $settings_page_title, $post_type_info[$post_type] );
+
+    $settings_page_menu_label = __( 'Description', 'cptdescriptions' );
+    $settings_page_menu_label = apply_filters( 'cptd_menu_label', $settings_page_menu_label, $post_type_info[$post_type] );
+
+    add_submenu_page(
+      'edit.php?post_type=' . $post_type,
+      $settings_page_title,
+      $settings_page_menu_label,
+      'edit_posts',
+      $post_type . '-description',
+      'post_type_desc_page'
+    );
   }
 }
 
@@ -108,7 +121,12 @@ function post_type_desc_page() {
     $_REQUEST['settings-updated'] = false; // This checks whether the form has just been submitted. ?>
 
 <div class="wrap">
-  <?php  screen_icon(); echo "<h2>" . __( 'Description of the ' ) . $post_type_info[$post_type]->labels->name . " Custom Post Type</h2>"; ?>
+  <?php  screen_icon();
+
+  $settings_page_title = sprintf( __( 'Description of the %1$s Custom Post Type', 'cptdescriptions' ), $post_type_info[$post_type]->labels->name );
+  $settings_page_title = apply_filters( 'cptd_admin_title', $settings_page_title, $post_type_info[$post_type] );
+
+  echo "<h2>" . $settings_page_title . "</h2>"; ?>
 
   <?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
     <div class="updated fade"><p><strong><?php _e( 'Options saved' ); ?></strong></p></div>
