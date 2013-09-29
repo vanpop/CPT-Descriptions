@@ -64,6 +64,35 @@ function post_type_desc_enable_pages() {
   }
 }
 
+// thank you! blog.rutwick.com/add-items-anywhere-to-the-wp-3-3-admin-bar
+function cptd_admin_bar_links( $admin_bar ) {
+  if( !is_admin() && is_post_type_archive() ) {
+    global $post_type;
+    $args = array(
+      'id'    => 'wp-admin-bar-edit',
+      'title' => __( 'Edit Description', 'cptdescriptions' ),
+      'href'  => admin_url( 'edit.php?post_type=' . $post_type . '&page=' . $post_type . '-description' )
+    );
+    $admin_bar->add_menu( $args );
+  }
+  if( is_admin() ) {
+    $screen = get_current_screen();
+    $post_type = $screen->post_type;
+    $description_page = $post_type . '_page_' . $post_type . '-description';
+    if( $screen->base == $description_page ) {
+      $post_type_object = get_post_type_object( $post_type );
+      $args = array(
+        'id'    => 'wp-admin-bar-edit',
+        'title' => 'View ' . $post_type_object->labels->name . ' Archive',
+        'href'  => get_post_type_archive_link( $post_type )
+      );
+      $admin_bar->add_menu( $args );
+    }
+  }
+
+}
+add_action('admin_bar_menu', 'cptd_admin_bar_links',  100);
+
 function post_type_desc_page() {
   global $post_type_desc;
   $screen = get_current_screen();
@@ -111,15 +140,12 @@ function post_type_desc_validate_options( $input ) {
 }
 
 function the_post_type_description( $post_type = '' ) {
-  if ( '' == $post_type )
-    global $post_type;
-  $post_type_x = get_option( 'post_type_desc_' . $post_type );
-  echo wpautop( $post_type_x['description'] );
+  echo get_post_type_description( $post_type );
 }
 
 function get_post_type_description( $post_type = '' ) {
   if ( '' == $post_type )
     global $post_type;
   $post_type_x = get_option( 'post_type_desc_' . $post_type );
-  return wpautop( $post_type_x['description'] );
+  echo apply_filters( 'the_content', $post_type_x['description'] );
 }
