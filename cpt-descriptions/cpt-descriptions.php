@@ -7,6 +7,8 @@ Description: Adds a place to enter a description for your custom post types whic
 Author: Evan Stein
 Author URI: http://vanpop.com/
 License: GPL v3
+Text Domain: cptdescriptions
+Domain Path: /localization/
 
 CPT Descriptions
 Copyright (C) 2013, Evan Stein - admin@vanpop.com
@@ -24,6 +26,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+load_plugin_textdomain(
+    'cptdescriptions',
+    false,
+    dirname( plugin_basename( __FILE__ ) ) . '/localization/'
+);
 
 add_action( 'admin_init', 'post_type_desc_register_settings' );
 add_action( 'admin_menu' , 'post_type_desc_enable_pages' );
@@ -145,7 +153,7 @@ function post_type_desc_page() {
       wp_editor( stripslashes( $settings['description'] ), 'description', $editor_settings );
       ?>
 
-        <p class="submit"><input type="submit" class="button-primary" value="Save Description" /></p>
+        <p class="submit"><input type="submit" class="button-primary" value="<?php _e( 'Save Description', 'cptdescriptions' ); ?>" /></p>
     </form>
 </div>
 <?php
