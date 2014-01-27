@@ -59,7 +59,12 @@ function post_type_desc_enable_pages() {
       );
       $post_type_info = get_post_types( $args, 'objects' );
 
-      add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+      if ( $post_type == 'post' ) {
+        // for historical reasons, the builtin 'post' post-type doesn't use an edit.php slug
+        add_submenu_page( 'edit.php', $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+      } else {
+        add_submenu_page( 'edit.php?post_type=' . $post_type, $post_type_info[$post_type]->labels->name . ' Custom Post Type Description', 'Description', 'edit_posts', urlencode( $post_type_info[$post_type]->name ) . '-description', 'post_type_desc_page' );
+      }
     }
   }
 }
